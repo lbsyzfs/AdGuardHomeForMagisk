@@ -38,9 +38,9 @@ start_AdGuardHome() {
 
         if wait_AdGuardHome_listen ; then
             dns_port=`cat ${AdGuardHome_dir}/AdGuardHome.yaml | grep "^  port:" | cut -d ' ' -f 4`
-            ${iptables} -t nat -A OUTPUT -m owner --uid-owner 0 --gid-owner 3005 -p udp --dport 53 -j RETURN
-            ${iptables} -t nat -A OUTPUT -p udp --dport 53 -j REDIRECT --to-ports 127.0.0.1:${dns_port}
-            ${iptables} -t nat -A OUTPUT -p tcp --dport 53 -j REDIRECT --to-ports 127.0.0.1:${dns_port}
+            #${iptables} -t nat -A OUTPUT -m owner --uid-owner 0 --gid-owner 3005 -p udp --dport 53 -j RETURN
+            #${iptables} -t nat -A OUTPUT -p udp --dport 53 -j REDIRECT --to-ports 127.0.0.1:${dns_port}
+            #${iptables} -t nat -A OUTPUT -p tcp --dport 53 -j REDIRECT --to-ports 127.0.0.1:${dns_port}
         fi
     else
         rm -rf ${AdGuardHome_dir}/AdGuardHome.yaml
@@ -64,9 +64,9 @@ start_AdGuardHome() {
 }
 
 stop_AdGuardHome() {
-    ${iptables} -t nat -D OUTPUT -m owner --uid-owner 0 --gid-owner 3005 -p udp --dport 53 -j RETURN > /dev/null 2>&1
-    ${iptables} -t nat -D OUTPUT -p udp --dport 53 -j REDIRECT --to-ports 127.0.0.1:${dns_port} > /dev/null 2>&1
-    ${iptables} -t nat -D OUTPUT -p tcp --dport 53 -j REDIRECT --to-ports 127.0.0.1:${dns_port} > /dev/null 2>&1
+    #${iptables} -t nat -D OUTPUT -m owner --uid-owner 0 --gid-owner 3005 -p udp --dport 53 -j RETURN > /dev/null 2>&1
+    #${iptables} -t nat -D OUTPUT -p udp --dport 53 -j REDIRECT --to-ports 127.0.0.1:${dns_port} > /dev/null 2>&1
+    #${iptables} -t nat -D OUTPUT -p tcp --dport 53 -j REDIRECT --to-ports 127.0.0.1:${dns_port} > /dev/null 2>&1
     kill -15 `cat ${AdGuardHome_dir}/AdGuardHome.pid 2> /dev/null` || kill -15 `${busybox_path} pidof AdGuardHome`
     rm -f ${AdGuardHome_dir}/AdGuardHome.pid
 
